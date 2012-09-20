@@ -1,0 +1,19 @@
+name: XPPromote
+main: dxdy.XPPromote.Main
+version: 1.3
+authors: [dxdy]
+depend: [Vault]
+permissions:
+    xpp.admin:
+        description: Required to reload the plugin
+        default: op
+    xpp.bypass:
+        description: Required to bypass the permission leveling
+        default: op
+commands:
+    xppromote:
+         description: Reloads Configuration
+         usage: /xppromote
+    xpp:
+         description: Tells you the description of a level
+         usage: /xpp [Level]
