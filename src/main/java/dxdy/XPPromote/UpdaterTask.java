@@ -27,14 +27,14 @@ public class UpdaterTask implements Runnable{
 		mPlayersLevels = PlayersLevels;
 		mTemporaryMessageCalc = new ArrayList<LevelPack>();
 	}
-	
-	
+
+
 	@Override
 	public void run() {
 		long TimeStart = System.nanoTime();
 		//		
 		Logger.getLogger("Minecraft").info("[XPP] Checking permissions");
-		
+
 		// Get players in queue
 		for (String PlayerName : mPlayers)
 		{
@@ -46,9 +46,9 @@ public class UpdaterTask implements Runnable{
 				continue;
 			}
 
-			
+
 			int ExpLevel = Player.getLevel();
-			
+
 			// Check the difference
 			int OldLevel = mPlayersLevels.get(Player.getName());
 			int DiffLevel = ExpLevel - OldLevel;
@@ -88,7 +88,7 @@ public class UpdaterTask implements Runnable{
 						{
 							PEXPlayer.removePermission(PermissionN.mNode);
 						}
-						
+
 						// If the player has got the level and hasn't got the permission it should be added
 						/*TODO Differentiate between Transient permissions and Permanent permissions
 						 * Reason being that the Persist perms are not persisting between restarts/
@@ -103,7 +103,7 @@ public class UpdaterTask implements Runnable{
 					{
 						// If the player has got the level and hasn't got the permission, grant it
 						if(ExpLevel >= LP.mLevel && !PlayerHasPermission)
-							PEXPlayer.addPermission(PermissionN.mNode);
+							PEXPlayer.addPersistentPermissions(PermissionN.mNode);
 						// But never remove it
 					}
 					else if(PermissionN.mType == PermissionNodeType.PNT_STRIP)
@@ -115,7 +115,7 @@ public class UpdaterTask implements Runnable{
 						if(ExpLevel >= LP.mLevel && PlayerHasPermission)
 							PEXPlayer.removePermission(PermissionN.mNode);
 					}
-					
+
 
 				}
 				// Manage groups
@@ -126,7 +126,7 @@ public class UpdaterTask implements Runnable{
 					else if (ExpLevel < LP.mLevel && PEXPlayer.isInGroup(LP.mGroup))
 						PEXPlayer.removeGroup(LP.mGroup);
 				}
-				
+
 				// And check whether this level pack is message relevant
 				if (DiffPositive && LP.mLevel > OldLevel && LP.mLevel <= ExpLevel)
 					mTemporaryMessageCalc.add(LP);
@@ -138,12 +138,12 @@ public class UpdaterTask implements Runnable{
 			String st2 =Double.toString(100D*(Valu/0.05D));
 			String st1 =  Double.toString(Valu * 1000D);
 			Logger.getLogger("Minecraft").info("[XPP] Checkingwewewee permissions done. It took " + st1.substring(0, st1.length() > 7? 7:st1.length()) + " ms, which is " + st2.substring(0, st2.length() > 4? 4:st2.length()) + " percent of the time affo20tps");
-		
-			
+
+
 			// You have been .... the following levels due to your		
 			String MessageWord = DiffPositive ? "granted" : "deprived of";
 
-			
+
 			// A single level or many?
 			if (mTemporaryMessageCalc.size() == 1)
 			{
@@ -157,7 +157,7 @@ public class UpdaterTask implements Runnable{
 			}
 			else if(mTemporaryMessageCalc.size() == 0)
 			{
-				
+
 			}
 			else
 			{
@@ -170,11 +170,11 @@ public class UpdaterTask implements Runnable{
 				}
 				Player.sendMessage((DiffPositive?ChatColor.DARK_GREEN:ChatColor.DARK_RED) + "For "+ChatColor.RED +"further information"+(DiffPositive?ChatColor.DARK_GREEN:ChatColor.DARK_RED)+" about individual levels please consult " + ChatColor.RED + "/xpp [LevelNumber]");
 			}	
-			
+
 			// Insert the new level
 			mPlayersLevels.put(Player.getName(), Player.getLevel());
 		}
-		
+
 		// Empty it
 		mPlayers.clear();
 		//
@@ -182,8 +182,8 @@ public class UpdaterTask implements Runnable{
 		String st2 =Double.toString(100D*(Valu/0.05D));
 		String st1 =  Double.toString(Valu * 1000D);
 		Logger.getLogger("Minecraft").info("[XPP] Checking permissions done. It took " + st1.substring(0, st1.length() > 7? 7:st1.length()) + " ms, which is " + st2.substring(0, st2.length() > 4? 4:st2.length()) + " percent of the time affo20tps");
-	
-	
+
+
 	}
 
 	/*
@@ -203,18 +203,16 @@ public class UpdaterTask implements Runnable{
 				return;
 			}
 		}
-		
-		sender.sendMessage(ChatColor.DARK_RED + "There is no level pack with the supplied ID.");
-		
-	}
-	
 
-	
+		sender.sendMessage(ChatColor.DARK_RED + "There is no level pack with the supplied ID.");
+
+	}
+
 	int mSystem;
 	Main mPlugin;
 	ArrayList<LevelPack> mLevels;
 	ArrayList<String> mPlayers;
 	HashMap<String, Integer> mPlayersLevels;
 	ArrayList<LevelPack> mTemporaryMessageCalc;
-	
+
 }

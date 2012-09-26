@@ -17,10 +17,10 @@ public class Main extends JavaPlugin{
 
 	public Main()
 	{
-	    mTaskID = -1;
-	    mUpdateInterval = 1000;
-	    mLevelLoss = -1;
-	    mPS = 0;
+		mTaskID = -1;
+		mUpdateInterval = 1000;
+		mLevelLoss = -1;
+		mPS = 0;
 	}
 
 	public void onDisable()
@@ -28,7 +28,7 @@ public class Main extends JavaPlugin{
 		getServer().getScheduler().cancelTasks(this);
 		System.out.println((new StringBuilder(String.valueOf(cmdName))).append("by ").append(author).append(" version ").append(version).append(" disabled.").toString());
 	}
-	    
+
 	public void onEnable()
 	{
 		pdf = getDescription();
@@ -39,12 +39,12 @@ public class Main extends JavaPlugin{
 
 		mLevelPackListener = new LevelPackListener(mLevelLoss, this);
 		ReloadConfiguration();
-		
-		
+
+
 		getServer().getPluginManager().registerEvents(mLevelPackListener, this);
 		System.out.println((new StringBuilder(String.valueOf(cmdName))).append("by ").append(author).append(" version ").append(version).append(" enabled.").toString());
 	}
-	
+
 	public int getPermSystem()
 	{
 		return mPS;
@@ -54,10 +54,10 @@ public class Main extends JavaPlugin{
 	 */
 	public VaultWrapper getPermissionWrapper(Player pPlayer, int sSystem)
 	{
-			VaultWrapper p = new VaultWrapper(pPlayer, mRSP);
-			
-				return p;
-	
+		VaultWrapper p = new VaultWrapper(pPlayer, mRSP);
+
+		return p;
+
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class Main extends JavaPlugin{
 				return true;
 			}
 			try{
-			mUpdaterTask.displayDescription(sender, Integer.parseInt(args[0]));
+				mUpdaterTask.displayDescription(sender, Integer.parseInt(args[0]));
 			}
 			catch (NumberFormatException e)
 			{
@@ -93,7 +93,7 @@ public class Main extends JavaPlugin{
 
 		return false;
 	}
-	    
+
 	/* 
 	 * Cancels any existing UpdaterTasks and starts them again
 	 */
@@ -104,7 +104,7 @@ public class Main extends JavaPlugin{
 			getServer().getScheduler().cancelTask(mTaskID);
 			mTaskID = -1;
 		}
-		
+
 		ArrayList<LevelPack> Levels = new ArrayList<LevelPack>();
 		ConfigurationReader Reader = new ConfigurationReader(Levels);
 		boolean ReturnValue = Reader.ReadConfiguration();
@@ -112,30 +112,32 @@ public class Main extends JavaPlugin{
 		{
 			return;
 		}
-		
+
 		if (Reader.mPS == 2)
 		{
 			mRSP = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class).getProvider();
 		}
-		
+
 		mLevelLoss = Reader.mLevelLoss;
 		mUpdateInterval = Reader.mUpdateInterval;
 		mPS = Reader.mPS;
-		
+
 		mLevelPackListener.mLevelLoss = mLevelLoss;
 		mUpdaterTask = new UpdaterTask(this, mPS, Levels, mLevelPackListener.mListToUpdate, mLevelPackListener.mPlayersLevels);
 		mTaskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, mUpdaterTask, mUpdateInterval, mUpdateInterval);
-		
+
 	}
-	
+
 	int mTaskID; // The ID of the experience Checker Task. -1 indicates that the task wasn't started.
-	
+
 	int mUpdateInterval; // The Interval between executions of the UpdaterTask
 	int mLevelLoss; // The percentage that is lost on death
-	
+
 	LevelPackListener mLevelPackListener;
 	UpdaterTask mUpdaterTask;
 	int mPS;
+	public String sPlayer;
+	public String sWorld = null;
 	public Permission mRSP;
 	public static PluginDescriptionFile pdf;
 	public static String name;
