@@ -29,6 +29,11 @@ public class VaultWrapper {
 		mRSP.playerRemoveTransient(mPlayer, perm);
 	}
 
+	/*
+	 * TODO: Change this addPermission method to addTransientPermission and create a new
+	 * addPersistPermission to actually force saving Persist Permissions to users (through Vault)
+	 * 
+	 */
 	public void addPermission(String perm) {
 		mRSP.playerAddTransient(mPlayer, perm);
 	

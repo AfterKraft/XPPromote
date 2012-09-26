@@ -88,7 +88,12 @@ public class UpdaterTask implements Runnable{
 						{
 							PEXPlayer.removePermission(PermissionN.mNode);
 						}
+						
 						// If the player has got the level and hasn't got the permission it should be added
+						/*TODO Differentiate between Transient permissions and Permanent permissions
+						 * Reason being that the Persist perms are not persisting between restarts/
+						 * player relog. Refer to VaultWrapper.java for the todo there.
+						 */
 						if(ExpLevel >= LP.mLevel && !PlayerHasPermission)
 							PEXPlayer.addPermission(PermissionN.mNode);
 
